@@ -3,6 +3,37 @@
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 import colorama
 from colorama import Fore
+import requests
+
+word_string = ""
+
+
+def fetch_api_data(api_url):
+    try:
+        response = requests.get(api_url)
+
+        if response.status_code == 200:
+            data = response.json()
+            if isinstance(data, list) and len(data) > 0:
+                word_string = data[0]
+                print(f"Extracted word: {word_string}")
+                return word_string
+            else:
+                print("Invalid response format or empty list.")
+                return None
+        else:
+            print(f"Request failed with status code: {response.status_code}")
+            return None
+    except requests.exceptions.RequestException as e:
+        print(f"Error occurred: {e}")
+        return None
+
+
+api_url = 'https://random-word-api.herokuapp.com/word?length=5'
+secret = fetch_api_data(api_url)
+
+if secret:
+    print(secret)
 
 print(Fore.CYAN+"Welcome to Python Wordle\n")
 print(Fore.BLUE+"Press Enter to start")
@@ -13,7 +44,7 @@ print(Fore.GREEN+"If the letter doesn't exist in the word, it will turn" +
 
 print(Fore.GREEN+"Good Luck !")
 
-secret = "pinte"
+
 user = "point"
 
 
