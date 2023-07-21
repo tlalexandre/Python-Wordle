@@ -2,10 +2,9 @@
 # You can delete these comments, but do not change the name of this file
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 import colorama
-from colorama import Fore
+from colorama import Fore, Back, init
 import requests
-
-word_string = ""
+init(autoreset=True)
 
 
 def fetch_api_data(api_url):
@@ -16,7 +15,6 @@ def fetch_api_data(api_url):
             data = response.json()
             if isinstance(data, list) and len(data) > 0:
                 word_string = data[0]
-                print(f"Extracted word: {word_string}")
                 return word_string
             else:
                 print("Invalid response format or empty list.")
@@ -29,36 +27,30 @@ def fetch_api_data(api_url):
         return None
 
 
-api_url = 'https://random-word-api.herokuapp.com/word?length=5'
-secret = fetch_api_data(api_url)
-
-if secret:
-    print(secret)
-
-print(Fore.CYAN+"Welcome to Python Wordle\n")
-print(Fore.BLUE+"Press Enter to start")
-print(Fore.GREEN+"The rules are simple: Guess the word on the screen in the less tries possible.\n Try to input differents letters and see if they exist in the word.\n If the letter exists in word but is misplaced it will turn"+(Fore.YELLOW+" YELLOW\n"))
-
-print(Fore.GREEN+"If the letter doesn't exist in the word, it will turn" +
-      (Fore.RED+" RED\n"))
-
-print(Fore.GREEN+"Good Luck !")
+api_url = 'https://random-word-api.vercel.app/api?words=1&length=5&type=uppercase'
 
 
-user = "point"
+def intro_display():
+    print(Fore.CYAN+"Welcome to Python Wordle\n")
+    print(Fore.BLUE+"Press Enter to start")
+    print(Fore.GREEN+"The rules are simple: Guess the word on the screen in the less tries possible.\n Try to input differents letters and see if they exist in the word.\n If the letter exists in word but is misplaced it will turn "+(Back.YELLOW+"YELLOW\n"))
+
+    print(Fore.GREEN+"If the letter doesn't exist in the word, it will turn " +
+          (Back.RED+"RED\n"))
+
+    print(Fore.WHITE+"Good Luck !")
+
+
+def user_word():
+    user_input = input("Enter your word: ").upper()
+    return user_input
 
 
 def split_string(word):
     letters = []
     for letter in word:
         letters.append(letter)
-
-    print(f"{letters} for the word {word}\n")
     return letters
-
-
-secret_letters = split_string(secret)
-user_letters = split_string(user)
 
 
 def compare_letters(secret_letters, user_letters):
@@ -69,6 +61,7 @@ def compare_letters(secret_letters, user_letters):
     If they have different positions but same letters, return an answer right letter wrong position. 
     If completely different, return answer, does not exist in the word
     '''
+
     common_letters = set(secret_letters) & set(user_letters)
     if secret_letters == user_letters:
         print("congratulations you win")
@@ -78,11 +71,28 @@ def compare_letters(secret_letters, user_letters):
                 position_secret = secret_letters.index(letter)
                 position_user = user_letters.index(letter)
                 if position_secret == position_user:
-                    print(f"{letter} right and at the right position")
+                    print(Back.GREEN +
+                          f"{letter}")
                 else:
-                    print(f"{letter} right but not at the right position")
+
+                    print(Back.YELLOW +
+                          f"{letter}")
             else:
-                print(f"{letter} does not exist in the word")
+
+                print(Back.RED+f"{letter}")
 
 
-compare_letters(secret_letters, user_letters)
+secret = fetch_api_data(api_url)
+
+intro = intro_display()
+
+
+def main():
+    user = user_word()
+    secret_letters = split_string(secret)
+    user_letters = split_string(user)
+    compare_letters(secret_letters, user_letters)
+    main()
+
+
+main()
