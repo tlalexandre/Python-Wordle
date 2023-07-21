@@ -1,7 +1,7 @@
 # Your code goes here.
 # You can delete these comments, but do not change the name of this file
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
-import colorama
+
 from colorama import Fore, Back, init
 import requests
 init(autoreset=True)
@@ -34,7 +34,6 @@ def intro_display():
     print(Fore.CYAN+"Welcome to Python Wordle\n")
     print(Fore.BLUE+"Press Enter to start")
     print(Fore.GREEN+"The rules are simple: Guess the word on the screen in the less tries possible.\n Try to input differents letters and see if they exist in the word.\n If the letter exists in word but is misplaced it will turn "+(Back.YELLOW+"YELLOW\n"))
-
     print(Fore.GREEN+"If the letter doesn't exist in the word, it will turn " +
           (Back.RED+"RED\n"))
 
@@ -53,6 +52,15 @@ def split_string(word):
     return letters
 
 
+def add_guesses(secret_letters, user_letters):
+    compare_letters(secret_letters, user_letters)
+
+
+def victory(guess, secret):
+    print(Back.MAGENTA +
+          f"Well Play ! You guessed in only {guess} times to find the word: {secret}")
+
+
 def compare_letters(secret_letters, user_letters):
     '''
     Creates a set with the letters from the user and the one from the secret word. 
@@ -64,7 +72,7 @@ def compare_letters(secret_letters, user_letters):
 
     common_letters = set(secret_letters) & set(user_letters)
     if secret_letters == user_letters:
-        print("congratulations you win")
+        victory
     else:
         for letter in user_letters:
             if letter in common_letters:
@@ -83,16 +91,19 @@ def compare_letters(secret_letters, user_letters):
 
 
 secret = fetch_api_data(api_url)
+guess = 0
 
 intro = intro_display()
 
 
-def main():
+def main(guess):
     user = user_word()
     secret_letters = split_string(secret)
     user_letters = split_string(user)
     compare_letters(secret_letters, user_letters)
-    main()
+    guess += 1
+    print(Back.BLUE+f"You guessed {guess} times")
+    main(guess)
 
 
-main()
+main(guess)
