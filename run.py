@@ -15,6 +15,30 @@ M = Back.MAGENTA
 ENDC = Back.RESET
 
 
+def intro_display():
+    print(B+"Welcome to Python Wordle\n")
+    print(B+"Press Enter to start")
+    print(B+"The rules are simple: Guess the Wordle in 6 tries.\n Each guess must be a 5-letter word.\n Try to input differents letters and see if they exist in the word.\n If the letter does exist in the word and in the correct spot,\n it will display in "+(G+"GREEN\n"))
+    print("If the letter exists in word but is misplaced it will turn "+(Y+"YELLOW\n"))
+    print(G+"If the letter doesn't exist in the word, it will turn " +
+          (R+"RED\n"))
+
+    print(W+"Good Luck !")
+
+
+def ask_word_length():
+    while True:
+        try:
+            length = int(
+                input("Enter the desired word length(example:5,3,7): "))
+            if length < 1 or length > 10:
+                print("Please enter a length between 1 and 10.")
+            else:
+                return length
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+
+
 def fetch_api_data(api_url):
     try:
         response = requests.get(api_url)
@@ -23,7 +47,6 @@ def fetch_api_data(api_url):
             data = response.json()
             if isinstance(data, list) and len(data) > 0:
                 word_string = data[0]
-                print(word_string)
                 return word_string
             else:
                 print("Invalid response format or empty list.")
@@ -34,20 +57,6 @@ def fetch_api_data(api_url):
     except requests.exceptions.RequestException as e:
         print(f"Error occurred: {e}")
         return None
-
-
-api_url = 'https://random-word-api.vercel.app/api?words=1&length=5&type=uppercase'
-
-
-def intro_display():
-    print(B+"Welcome to Python Wordle\n")
-    print(B+"Press Enter to start")
-    print(B+"The rules are simple: Guess the Wordle in 6 tries.\n Each guess must be a 5-letter word.\n Try to input differents letters and see if they exist in the word.\n If the letter does exist in the word and in the correct spot,\n it will display in "+(G+"GREEN\n"))
-    print("If the letter exists in word but is misplaced it will turn "+(Y+"YELLOW\n"))
-    print(G+"If the letter doesn't exist in the word, it will turn " +
-          (R+"RED\n"))
-
-    print(W+"Good Luck !")
 
 
 def user_word():
@@ -62,9 +71,9 @@ def split_string(word):
     return letters
 
 
-def check_length(user_letters):
-    if len(user_letters) != 5:
-        print("You can only enter up to 5 letters.")
+def check_length(user_letters, word_length):
+    if len(user_letters) != word_length:
+        print(f"You can only enter up to {word_length} letters.")
         return False
     return True
 
@@ -144,17 +153,18 @@ def compare_letters(secret_letters, user_letters, wrong_letters, guess):
     return wrong_letters
 
 
+intro = intro_display()
+word_length = ask_word_length()
+api_url = f'https://random-word-api.vercel.app/api?words=1&length={word_length}&type=uppercase'
 secret = fetch_api_data(api_url)
 guess = 0
-
-intro = intro_display()
 
 
 def main(guess):
     user = user_word()
     secret_letters = split_string(secret)
     user_letters = split_string(user)
-    if check_length(user_letters):
+    if check_length(user_letters, word_length):
         if check_real_word(user):
             compare_letters(secret_letters, user_letters, wrong_letters, guess)
             if secret_letters == user_letters:
