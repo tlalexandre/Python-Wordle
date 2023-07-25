@@ -123,8 +123,8 @@ def main(guess):
     compare_letters(secret_letters, user_letters, wrong_letters)
     guess += 1
     print(Back.BLUE+f"You guessed {guess} times")
-    input("Press Enter to continue...")
-    clear_output()
+    # input("Press Enter to continue...")
+    # clear_output()
     main(guess)
     return guess
 
