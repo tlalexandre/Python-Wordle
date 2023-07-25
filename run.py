@@ -23,6 +23,7 @@ def fetch_api_data(api_url):
             data = response.json()
             if isinstance(data, list) and len(data) > 0:
                 word_string = data[0]
+                print(word_string)
                 return word_string
             else:
                 print("Invalid response format or empty list.")
@@ -61,6 +62,34 @@ def split_string(word):
     return letters
 
 
+def check_length(user_letters):
+    if len(user_letters) != 5:
+        print("You can only enter up to 5 letters.")
+        return False
+    return True
+
+
+def check_real_word(user):
+    try:
+        response = requests.get(
+            f"https://api.dictionaryapi.dev/api/v2/entries/en/{user}")
+
+        if response.status_code == 200:
+            data = response.json()
+            if isinstance(data, list) and len(data) > 0:
+                print(f"The word '{user}' exists in the dictionary.")
+                return True
+            else:
+                print(f"The word '{user}' does not exist in the dictionary.")
+                return False
+        else:
+            print(f"The word '{user}' does not exist in the dictionary.")
+            return False
+    except requests.exceptions.RequestException as e:
+        print(f"Error occurred: {e}")
+        return False
+
+
 def victory(guess, secret):
     print(M +
           f"Well Play ! You guessed in only {guess} times to find the word: {secret}")
@@ -69,7 +98,7 @@ def victory(guess, secret):
 wrong_letters = set()
 
 
-def compare_letters(secret_letters, user_letters, wrong_letters):
+def compare_letters(secret_letters, user_letters, wrong_letters, guess):
     '''
     Creates a set with the letters from the user and the one from the secret word. 
     Iterates through the user_letters, if the letter exists , it triggers the second condition checking the position of the letters. 
@@ -77,9 +106,6 @@ def compare_letters(secret_letters, user_letters, wrong_letters):
     If they have different positions but same letters, return an answer right letter wrong position. 
     If completely different, return answer, does not exist in the word
     '''
-    if len(user_letters) > 5:
-        print("You can only enter up to 5 letters.")
-        return wrong_letters
 
     secret_letters = list(secret_letters)
     user_letters = list(user_letters)
@@ -88,20 +114,28 @@ def compare_letters(secret_letters, user_letters, wrong_letters):
     if secret_letters == user_letters:
         victory(guess, secret)
     else:
+        correct_positions = set()
+        misplaced_positions = set()
         for letter in user_letters:
             if letter in common_letters:
-                position_secret = secret_letters.index(letter)
-                position_user = user_letters.index(letter)
-                if position_secret == position_user:
-
+                position_secret = [i for i, x in enumerate(
+                    secret_letters) if x == letter]
+                position_user = [i for i, x in enumerate(
+                    user_letters) if x == letter]
+                for pos_secret in position_secret:
+                    for pos_user in position_user:
+                        if pos_secret == pos_user:
+                            correct_positions.add(pos_user)
+                        else:
+                            misplaced_positions.add(pos_user)
+        for i, letter in enumerate(user_letters):
+            if letter in common_letters:
+                if i in correct_positions:
                     print(G+f"{letter}"+ENDC, end="")
-
-                else:
-
+                elif i in misplaced_positions:
                     print(Y+f"{letter}"+ENDC, end="")
-
             else:
-                print(R+f"{letter}"+ENDC, end="")
+                print(R + f"{letter}"+ENDC, end="")
                 wrong_letters.add(letter)
         print("\n")
     print(
@@ -109,7 +143,21 @@ def compare_letters(secret_letters, user_letters, wrong_letters):
     print("\n")
     return wrong_letters
 
+    #             if position_secret == position_user:
 
+    #                 print(G+f"{letter}"+ENDC, end="")
+
+
+    #             else:
+    #                 print(Y+f"{letter}"+ENDC, end="")
+    #         else:
+    #             print(R+f"{letter}"+ENDC, end="")
+    #             wrong_letters.add(letter)
+    #     print("\n")
+    # print(
+    #     R+f"Here is a list of the letters you already tried and are wrong: \n {wrong_letters}")
+    # print("\n")
+    # return wrong_letters
 secret = fetch_api_data(api_url)
 guess = 0
 
@@ -120,11 +168,11 @@ def main(guess):
     user = user_word()
     secret_letters = split_string(secret)
     user_letters = split_string(user)
-    compare_letters(secret_letters, user_letters, wrong_letters)
+    if check_length(user_letters):
+        if check_real_word(user):
+            compare_letters(secret_letters, user_letters, wrong_letters, guess)
     guess += 1
     print(Back.BLUE+f"You guessed {guess} times")
-    # input("Press Enter to continue...")
-    # clear_output()
     main(guess)
     return guess
 
