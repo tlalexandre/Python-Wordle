@@ -143,21 +143,7 @@ def compare_letters(secret_letters, user_letters, wrong_letters, guess):
     print("\n")
     return wrong_letters
 
-    #             if position_secret == position_user:
 
-    #                 print(G+f"{letter}"+ENDC, end="")
-
-
-    #             else:
-    #                 print(Y+f"{letter}"+ENDC, end="")
-    #         else:
-    #             print(R+f"{letter}"+ENDC, end="")
-    #             wrong_letters.add(letter)
-    #     print("\n")
-    # print(
-    #     R+f"Here is a list of the letters you already tried and are wrong: \n {wrong_letters}")
-    # print("\n")
-    # return wrong_letters
 secret = fetch_api_data(api_url)
 guess = 0
 
@@ -171,6 +157,8 @@ def main(guess):
     if check_length(user_letters):
         if check_real_word(user):
             compare_letters(secret_letters, user_letters, wrong_letters, guess)
+            if secret_letters == user_letters:
+                return
     guess += 1
     print(Back.BLUE+f"You guessed {guess} times")
     main(guess)
