@@ -31,7 +31,7 @@ def ask_word_length():
     while True:
         try:
             length = int(
-                input("Enter the desired word length(example:5,3,7): "))
+                input("Enter the desired word length(min:1 max:10): "))
             if length < 1 or length > 10:
                 print("Please enter a length between 1 and 10.")
             else:
@@ -170,8 +170,10 @@ def main(guess):
             compare_letters(secret_letters, user_letters, wrong_letters, guess)
             if secret_letters == user_letters:
                 return
-    guess += 1
-    print(Back.BLUE+f"You guessed {guess} times")
+            guess += 1
+    print(Back.BLUE+f"Number of guesses: {guess}")
+    clear_output(wait=True)
+
     main(guess)
     return guess
 
