@@ -1,7 +1,7 @@
 # Your code goes here.
 # You can delete these comments, but do not change the name of this file
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
-
+from IPython.display import clear_output
 from colorama import Fore, Back, init
 import requests
 init(autoreset=True)
@@ -41,7 +41,8 @@ api_url = 'https://random-word-api.vercel.app/api?words=1&length=5&type=uppercas
 def intro_display():
     print(B+"Welcome to Python Wordle\n")
     print(B+"Press Enter to start")
-    print(G+"The rules are simple: Guess the word on the screen in the less tries possible.\n Try to input differents letters and see if they exist in the word.\n If the letter exists in word but is misplaced it will turn "+(Y+"YELLOW\n"))
+    print(B+"The rules are simple: Guess the Wordle in 6 tries.\n Each guess must be a 5-letter word.\n Try to input differents letters and see if they exist in the word.\n If the letter does exist in the word and in the correct spot,\n it will display in "+(G+"GREEN\n"))
+    print("If the letter exists in word but is misplaced it will turn "+(Y+"YELLOW\n"))
     print(G+"If the letter doesn't exist in the word, it will turn " +
           (R+"RED\n"))
 
@@ -60,16 +61,15 @@ def split_string(word):
     return letters
 
 
-def add_guesses(secret_letters, user_letters):
-    compare_letters(secret_letters, user_letters)
-
-
 def victory(guess, secret):
     print(M +
           f"Well Play ! You guessed in only {guess} times to find the word: {secret}")
 
 
-def compare_letters(secret_letters, user_letters):
+wrong_letters = set()
+
+
+def compare_letters(secret_letters, user_letters, wrong_letters):
     '''
     Creates a set with the letters from the user and the one from the secret word. 
     Iterates through the user_letters, if the letter exists , it triggers the second condition checking the position of the letters. 
@@ -77,9 +77,14 @@ def compare_letters(secret_letters, user_letters):
     If they have different positions but same letters, return an answer right letter wrong position. 
     If completely different, return answer, does not exist in the word
     '''
+    if len(user_letters) > 5:
+        print("You can only enter up to 5 letters.")
+        return wrong_letters
+
     secret_letters = list(secret_letters)
     user_letters = list(user_letters)
     common_letters = set(secret_letters) & set(user_letters)
+
     if secret_letters == user_letters:
         victory(guess, secret)
     else:
@@ -90,16 +95,19 @@ def compare_letters(secret_letters, user_letters):
                 if position_secret == position_user:
 
                     print(G+f"{letter}"+ENDC, end="")
-                    secret_letters[position_secret] = None
-                    user_letters[position_user] = None
 
                 else:
 
                     print(Y+f"{letter}"+ENDC, end="")
-                    secret_letters[position_secret] = None
+
             else:
                 print(R+f"{letter}"+ENDC, end="")
+                wrong_letters.add(letter)
+        print("\n")
+    print(
+        R+f"Here is a list of the letters you already tried and are wrong: \n {wrong_letters}")
     print("\n")
+    return wrong_letters
 
 
 secret = fetch_api_data(api_url)
@@ -112,10 +120,13 @@ def main(guess):
     user = user_word()
     secret_letters = split_string(secret)
     user_letters = split_string(user)
-    compare_letters(secret_letters, user_letters)
+    compare_letters(secret_letters, user_letters, wrong_letters)
     guess += 1
     print(Back.BLUE+f"You guessed {guess} times")
+    input("Press Enter to continue...")
+    clear_output()
     main(guess)
+    return guess
 
 
 main(guess)
