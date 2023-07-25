@@ -2,6 +2,7 @@
 # You can delete these comments, but do not change the name of this file
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 from IPython.display import clear_output
+import os
 from colorama import Fore, Back, init
 import requests
 init(autoreset=True)
@@ -163,6 +164,8 @@ guess = 0
 
 def main(guess):
     user = user_word()
+    if guess % 3 == 0:
+        clear_terminal()
     secret_letters = split_string(secret)
     user_letters = split_string(user)
     if check_length(user_letters, word_length):
@@ -172,10 +175,17 @@ def main(guess):
                 return
             guess += 1
     print(Back.BLUE+f"Number of guesses: {guess}")
-    clear_output(wait=True)
 
     main(guess)
     return guess
+
+
+def clear_terminal():
+    if guess % 2 == 0:
+        if os.name == 'posix':  # for Unix-like systems (Linux, macOS)
+            os.system('clear')
+        else:  # for Windows
+            os.system('cls')
 
 
 main(guess)
