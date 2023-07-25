@@ -6,24 +6,25 @@ from colorama import Fore, Back, init
 import requests
 init(autoreset=True)
 
-G = Back.LIGHTGREEN_EX
-R = Back.RED
-B = Back.CYAN
-Y = Back.YELLOW
-W = Back.WHITE
-M = Back.MAGENTA
+BG = Back.LIGHTGREEN_EX
+BR = Back.RED
+FC = Fore.CYAN
+BY = Back.YELLOW
+FW = Fore.WHITE
+BM = Back.MAGENTA
 ENDC = Back.RESET
 
 
 def intro_display():
-    print(B+"Welcome to Python Wordle\n")
-    print(B+"Press Enter to start")
-    print(B+"The rules are simple: Guess the Wordle in 6 tries.\n Each guess must be a 5-letter word.\n Try to input differents letters and see if they exist in the word.\n If the letter does exist in the word and in the correct spot,\n it will display in "+(G+"GREEN\n"))
-    print("If the letter exists in word but is misplaced it will turn "+(Y+"YELLOW\n"))
-    print(G+"If the letter doesn't exist in the word, it will turn " +
-          (R+"RED\n"))
+    print(FC+"Welcome to Python Wordle\n")
+    print(FC+"Press Enter to start")
+    print(FC+"The rules are simple: Guess the Wordle in 6 tries.\n Each guess must be a 5-letter word.\n Try to input differents letters and see if they exist in the word.\n ")
+    print(FW+"If the letter does exist in the word and in the correct spot,\n it will display in "+(BG+"GREEN\n"))
+    print("If the letter exists in word but is misplaced it will turn "+(BY+"YELLOW\n"))
+    print(FW+"If the letter doesn't exist in the word, it will turn " +
+          (BR+"RED\n"))
 
-    print(W+"Good Luck !")
+    print(FW+"Good Luck !")
 
 
 def ask_word_length():
@@ -100,7 +101,7 @@ def check_real_word(user):
 
 
 def victory(guess, secret):
-    print(M +
+    print(BM +
           f"Well Play ! You guessed in only {guess} times to find the word: {secret}")
 
 
@@ -140,15 +141,15 @@ def compare_letters(secret_letters, user_letters, wrong_letters, guess):
         for i, letter in enumerate(user_letters):
             if letter in common_letters:
                 if i in correct_positions:
-                    print(G+f"{letter}"+ENDC, end="")
+                    print(BG+f"{letter}"+ENDC, end="")
                 elif i in misplaced_positions:
-                    print(Y+f"{letter}"+ENDC, end="")
+                    print(BY+f"{letter}"+ENDC, end="")
             else:
-                print(R + f"{letter}"+ENDC, end="")
+                print(BR + f"{letter}"+ENDC, end="")
                 wrong_letters.add(letter)
         print("\n")
     print(
-        R+f"Here is a list of the letters you already tried and are wrong: \n {wrong_letters}")
+        FW+f"Here is a list of the letters you already tried and are wrong:", BR + f"{wrong_letters}")
     print("\n")
     return wrong_letters
 
