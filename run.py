@@ -122,70 +122,86 @@ def compare_letters(secret_letters, user_letters, wrong_letters, guess):
     user_letters = list(user_letters)
     common_letters = set(secret_letters) & set(user_letters)
 
-    if secret_letters == user_letters:
-        victory(guess, secret)
-    else:
-        correct_positions = set()
-        misplaced_positions = set()
-        for letter in user_letters:
-            if letter in common_letters:
-                position_secret = [i for i, x in enumerate(
-                    secret_letters) if x == letter]
-                position_user = [i for i, x in enumerate(
-                    user_letters) if x == letter]
-                for pos_secret in position_secret:
-                    for pos_user in position_user:
-                        if pos_secret == pos_user:
-                            correct_positions.add(pos_user)
-                        else:
-                            misplaced_positions.add(pos_user)
-        for i, letter in enumerate(user_letters):
-            if letter in common_letters:
-                if i in correct_positions:
-                    print(BG+f"{letter}"+ENDC, end="")
-                elif i in misplaced_positions:
-                    print(BY+f"{letter}"+ENDC, end="")
-            else:
-                print(BR + f"{letter}"+ENDC, end="")
-                wrong_letters.add(letter)
-        print("\n")
-    print(
-        FW+f"Here is a list of the letters you already tried and are wrong:", BR + f"{wrong_letters}")
+    correct_positions = set()
+    misplaced_positions = set()
+    for letter in user_letters:
+        if letter in common_letters:
+            position_secret = [i for i, x in enumerate(
+                secret_letters) if x == letter]
+            position_user = [i for i, x in enumerate(
+                user_letters) if x == letter]
+            for pos_secret in position_secret:
+                for pos_user in position_user:
+                    if pos_secret == pos_user:
+                        correct_positions.add(pos_user)
+                    else:
+                        misplaced_positions.add(pos_user)
+    for i, letter in enumerate(user_letters):
+        if letter in common_letters:
+            if i in correct_positions:
+                print(BG+f"{letter}"+ENDC, end="")
+            elif i in misplaced_positions:
+                print(BY+f"{letter}"+ENDC, end="")
+        else:
+            print(BR + f"{letter}"+ENDC, end="")
+            wrong_letters.add(letter)
+    print("\n")
+
+    print(FW+f"Here is a list of the letters you already tried and are wrong:",
+          BR + f"{wrong_letters}")
     print("\n")
     return wrong_letters
 
 
-intro = intro_display()
-word_length = ask_word_length()
-api_url = f'https://random-word-api.vercel.app/api?words=1&length={word_length}&type=uppercase'
-secret = fetch_api_data(api_url)
-guess = 0
+def play_again():
+    choice = input("Do you want to play again? (Y/N): ").strip().upper()
+    if choice == "Y":
+        return True
+    elif choice == "N":
+        return False
+    else:
+        print("Invalid choice. Please enter 'Y' or 'N'.")
 
 
-def main(guess):
-    user = user_word()
-    if guess % 3 == 0:
-        clear_terminal()
-    secret_letters = split_string(secret)
-    user_letters = split_string(user)
-    if check_length(user_letters, word_length):
-        if check_real_word(user):
-            compare_letters(secret_letters, user_letters, wrong_letters, guess)
-            if secret_letters == user_letters:
-                return
-            guess += 1
-    print(Back.BLUE+f"Number of guesses: {guess}")
-
-    main(guess)
-    return guess
+def main_game():
+    intro_display()
+    word_length = ask_word_length()
+    api_url = f'https://random-word-api.vercel.app/api?words=1&length={word_length}&type=uppercase'
+    secret = fetch_api_data(api_url)
+    print(secret)
+    guess = 0
+    while True:
+        user = user_word()
+        guess += 1
+        if guess % 3 == 0:
+            clear_terminal()
+        secret_letters = split_string(secret)
+        user_letters = split_string(user)
+        if check_length(user_letters, word_length):
+            if check_real_word(user):
+                compare_letters(secret_letters, user_letters,
+                                wrong_letters, guess)
+                if secret_letters == user_letters:
+                    print(
+                        BM+f"Well Play, you guessed the word {secret} in only{guess}")
+                    return
+        print(Back.BLUE+f"Number of guesses: {guess}")
 
 
 def clear_terminal():
-    if guess % 2 == 0:
-        if os.name == 'posix':  # for Unix-like systems (Linux, macOS)
-            os.system('clear')
-        else:  # for Windows
-            os.system('cls')
+    if os.name == 'posix':  # for Unix-like systems (Linux, macOS)
+        os.system('clear')
+    else:  # for Windows
+        os.system('cls')
 
 
-main(guess)
+def main():
+    while True:
+        clear_terminal()
+        main_game()
+        if not play_again():
+            break
+    print("Thanks for playing!")
+
+
+main()
