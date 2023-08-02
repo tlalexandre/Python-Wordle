@@ -5,12 +5,12 @@ import requests
 
 init(autoreset=True)
 
-BG = Fore.WHITE + Back.GREEN
-BR = Back.RED + Fore.BLACK
+BG = Style.BRIGHT+Fore.WHITE + Back.GREEN
+BR = Style.BRIGHT+Back.RED + Fore.BLACK
 FC = Fore.CYAN
-BY = Back.YELLOW
+BY = Style.BRIGHT+Back.YELLOW+Fore.BLACK
 FW = Fore.WHITE
-BM = Back.MAGENTA
+BM = Style.BRIGHT+Back.MAGENTA+Fore.BLACK
 ENDC = Back.RESET
 
 
@@ -24,14 +24,13 @@ def intro_display():
     print(
         FW
         + "If the letter does exist in the word and in the correct spot,it will display in\n"
-        + Style.BRIGHT
+
         + BG
         + " GREEN"
         + Style.RESET_ALL
     )
     print(
         "If the letter exists in the word but is misplaced, it will turn "
-        + Style.BRIGHT
         + BY
         + "YELLOW"
         + Style.RESET_ALL
@@ -39,7 +38,6 @@ def intro_display():
     print(
         FW
         + "If the letter doesn't exist in the word, it will turn "
-        + Style.BRIGHT
         + BR
         + "RED"
         + Style.RESET_ALL
@@ -109,7 +107,7 @@ def check_real_word(user):
         if response.status_code == 200:
             data = response.json()
             if isinstance(data, list) and len(data) > 0:
-                print(BG+f"The word '{user}' exists in the dictionary.")
+                print(BG+f"The word '{user}' exists in the dictionary.\n")
                 return True
             else:
                 print(
@@ -169,7 +167,7 @@ def compare_letters(user_letters, secret_letters, wrong_letters):
         elif i in wrong_positions:
             print(BR + f"{letter}")
     print("\n")
-    print(BR + f"Here's the letters you tried and were wrong: {wrong_letters}")
+    print(BM + f"Here's the letters you tried and were wrong: {wrong_letters}")
     print("\n")
     return wrong_letters
 
