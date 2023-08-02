@@ -175,6 +175,7 @@ def main_game():
             clear_terminal()
         secret_letters = split_string(secret)
         user_letters = split_string(user)
+
         if check_length(user_letters, word_length):
             if check_real_word(user):
                 compare_letters(
@@ -182,9 +183,13 @@ def main_game():
 
                 if secret_letters == user_letters:
                     print(
-                        BM+f"Well Play, you guessed the word {secret} in only{guess}")
+                        BM+f"Well Play, you guessed the word {secret} in only {guess} times")
                     return
         print(Back.BLUE+f"Number of guesses: {guess}")
+        give_up = input("Do you want to give up? (y/n): ")
+        if give_up.lower() == 'y':
+            print(f"The secret word was {secret}. Better luck next time!")
+            return
 
 
 def clear_terminal():
