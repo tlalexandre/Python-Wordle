@@ -1,12 +1,12 @@
 from IPython.display import clear_output
 import os
-from colorama import Fore, Back, init
+from colorama import Fore, Back, Style, init
 import requests
 
 init(autoreset=True)
 
-BG = Back.LIGHTGREEN_EX
-BR = Back.RED
+BG = Fore.WHITE + Back.GREEN
+BR = Back.RED + Fore.BLACK
 FC = Fore.CYAN
 BY = Back.YELLOW
 FW = Fore.WHITE
@@ -19,20 +19,30 @@ def intro_display():
     print(FC + "Press Enter to start")
     print(
         FC
-        + f"The rules are simple: Guess the Wordle in a minimum of tries.\n Try to input differents letters and see if they exist in the word.\n "
+        + f"The rules are simple: Guess the Wordle in a minimum of tries.\n Try to input differents words to reveal the letters in the secret word.\n "
     )
     print(
         FW
-        + "If the letter does exist in the word and in the correct spot,\n it will display in "
-        + (BG + "GREEN\n")
+        + "If the letter does exist in the word and in the correct spot,it will display in\n"
+        + Style.BRIGHT
+        + BG
+        + " GREEN"
+        + Style.RESET_ALL
     )
     print(
-        "If the letter exists in word but is misplaced it will turn "
-        + (BY + "YELLOW\n")
+        "If the letter exists in the word but is misplaced, it will turn "
+        + Style.BRIGHT
+        + BY
+        + "YELLOW"
+        + Style.RESET_ALL
     )
     print(
-        FW + "If the letter doesn't exist in the word, it will turn " +
-        (BR + "RED\n")
+        FW
+        + "If the letter doesn't exist in the word, it will turn "
+        + Style.BRIGHT
+        + BR
+        + "RED"
+        + Style.RESET_ALL
     )
 
     print(FW + "Good Luck !")
@@ -42,13 +52,13 @@ def ask_word_length():
     while True:
         try:
             length = int(
-                input("Enter the desired word length(min:4 max:8): "))
+                input(FC+"Enter the desired word length(min:4 max:8): "))
             if length < 4 or length > 8:
-                print("Please enter a length between 4 and 8.")
+                print(BR+"Please enter a length between 4 and 8.")
             else:
                 return length
         except ValueError:
-            print("Invalid input. Please enter a valid number.")
+            print(BR+"Invalid input. Please enter a valid number.")
 
 
 def fetch_api_data(api_url):
@@ -85,7 +95,7 @@ def split_string(word):
 
 def check_length(user_letters, word_length):
     if len(user_letters) != word_length:
-        print(f"You can only enter up to {word_length} letters.")
+        print(BR+f"You can only enter up to {word_length} letters.")
         return False
     return True
 
@@ -99,13 +109,14 @@ def check_real_word(user):
         if response.status_code == 200:
             data = response.json()
             if isinstance(data, list) and len(data) > 0:
-                print(f"The word '{user}' exists in the dictionary.")
+                print(BG+f"The word '{user}' exists in the dictionary.")
                 return True
             else:
-                print(f"The word '{user}' does not exist in the dictionary.")
+                print(
+                    BR+f"The word '{user}' does not exist in the dictionary.")
                 return False
         else:
-            print(f"The word '{user}' does not exist in the dictionary.")
+            print(BR+f"The word '{user}' does not exist in the dictionary.")
             return False
     except requests.exceptions.RequestException as e:
         print(f"Error occurred: {e}")
@@ -170,7 +181,7 @@ def play_again():
     elif choice == "N":
         return False
     else:
-        print("Invalid choice. Please enter 'Y' or 'N'.")
+        print(BR+"Invalid choice. Please enter 'Y' or 'N'.")
 
 
 def main_game():
@@ -178,8 +189,6 @@ def main_game():
     word_length = ask_word_length()
     api_url = f"https://random-word-api.vercel.app/api?words=1&length={word_length}&type=uppercase"
     secret = fetch_api_data(api_url)
-    # secret = "CIVIL"
-    print(secret)
     guess = 0
     while True:
         user = user_word()
