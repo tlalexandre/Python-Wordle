@@ -1,10 +1,8 @@
-# Your code goes here.
-# You can delete these comments, but do not change the name of this file
-# Write your code to expect a terminal of 80 characters wide and 24 rows high
 from IPython.display import clear_output
 import os
 from colorama import Fore, Back, init
 import requests
+
 init(autoreset=True)
 
 BG = Back.LIGHTGREEN_EX
@@ -17,24 +15,36 @@ ENDC = Back.RESET
 
 
 def intro_display():
-    print(FC+"Welcome to Python Wordle\n")
-    print(FC+"Press Enter to start")
-    print(FC+"The rules are simple: Guess the Wordle in 6 tries.\n Each guess must be a 5-letter word.\n Try to input differents letters and see if they exist in the word.\n ")
-    print(FW+"If the letter does exist in the word and in the correct spot,\n it will display in "+(BG+"GREEN\n"))
-    print("If the letter exists in word but is misplaced it will turn "+(BY+"YELLOW\n"))
-    print(FW+"If the letter doesn't exist in the word, it will turn " +
-          (BR+"RED\n"))
+    print(FC + "Welcome to Python Wordle\n")
+    print(FC + "Press Enter to start")
+    print(
+        FC
+        + f"The rules are simple: Guess the Wordle in a minimum of tries.\n Try to input differents letters and see if they exist in the word.\n "
+    )
+    print(
+        FW
+        + "If the letter does exist in the word and in the correct spot,\n it will display in "
+        + (BG + "GREEN\n")
+    )
+    print(
+        "If the letter exists in word but is misplaced it will turn "
+        + (BY + "YELLOW\n")
+    )
+    print(
+        FW + "If the letter doesn't exist in the word, it will turn " +
+        (BR + "RED\n")
+    )
 
-    print(FW+"Good Luck !")
+    print(FW + "Good Luck !")
 
 
 def ask_word_length():
     while True:
         try:
             length = int(
-                input("Enter the desired word length(min:1 max:10): "))
-            if length < 1 or length > 10:
-                print("Please enter a length between 1 and 10.")
+                input("Enter the desired word length(min:4 max:8): "))
+            if length < 4 or length > 8:
+                print("Please enter a length between 4 and 8.")
             else:
                 return length
         except ValueError:
@@ -83,7 +93,8 @@ def check_length(user_letters, word_length):
 def check_real_word(user):
     try:
         response = requests.get(
-            f"https://api.dictionaryapi.dev/api/v2/entries/en/{user}")
+            f"https://api.dictionaryapi.dev/api/v2/entries/en/{user}"
+        )
 
         if response.status_code == 200:
             data = response.json()
@@ -102,8 +113,10 @@ def check_real_word(user):
 
 
 def victory(guess, secret):
-    print(BM +
-          f"Well Play ! You guessed in only {guess} times to find the word: {secret}")
+    print(
+        BM +
+        f"Well Play ! You guessed in only {guess} times to find the word: {secret}"
+    )
 
 
 wrong_letters = set()
@@ -119,10 +132,10 @@ def compare_letters(user_letters, secret_letters, wrong_letters):
     secret_counts = {}
 
     for letter in secret_letters:
-        secret_counts[letter] = secret_counts.get(letter, 0)+1
+        secret_counts[letter] = secret_counts.get(letter, 0) + 1
 
     for letter in user_letters:
-        user_counts[letter] = user_counts.get(letter, 0)+1
+        user_counts[letter] = user_counts.get(letter, 0) + 1
 
     for i, letter in enumerate(user_letters):
         if letter == secret_letters[i]:
@@ -139,13 +152,13 @@ def compare_letters(user_letters, secret_letters, wrong_letters):
 
     for i, letter in enumerate(user_letters):
         if i in correct_positions:
-            print(BG+f"{letter}")
+            print(BG + f"{letter}")
         elif i in misplaced_positions and i not in wrong_positions:
-            print(BY+f"{letter}")
+            print(BY + f"{letter}")
         elif i in wrong_positions:
-            print(BR+f"{letter}")
+            print(BR + f"{letter}")
     print("\n")
-    print(BR+f"Here's the letters you tried and were wrong: {wrong_letters}")
+    print(BR + f"Here's the letters you tried and were wrong: {wrong_letters}")
     print("\n")
     return wrong_letters
 
@@ -163,7 +176,7 @@ def play_again():
 def main_game():
     intro_display()
     word_length = ask_word_length()
-    api_url = f'https://random-word-api.vercel.app/api?words=1&length={word_length}&type=uppercase'
+    api_url = f"https://random-word-api.vercel.app/api?words=1&length={word_length}&type=uppercase"
     secret = fetch_api_data(api_url)
     # secret = "CIVIL"
     print(secret)
@@ -178,25 +191,26 @@ def main_game():
 
         if check_length(user_letters, word_length):
             if check_real_word(user):
-                compare_letters(
-                    user_letters, secret_letters, wrong_letters)
+                compare_letters(user_letters, secret_letters, wrong_letters)
 
                 if secret_letters == user_letters:
                     print(
-                        BM+f"Well Play, you guessed the word {secret} in only {guess} times")
+                        BM
+                        + f"Well Play, you guessed the word {secret} in only {guess} times"
+                    )
                     return
-        print(Back.BLUE+f"Number of guesses: {guess}")
+        print(Back.BLUE + f"Number of guesses: {guess}")
         give_up = input("Do you want to give up? (y/n): ")
-        if give_up.lower() == 'y':
+        if give_up.lower() == "y":
             print(f"The secret word was {secret}. Better luck next time!")
             return
 
 
 def clear_terminal():
-    if os.name == 'posix':  # for Unix-like systems (Linux, macOS)
-        os.system('clear')
+    if os.name == "posix":  # for Unix-like systems (Linux, macOS)
+        os.system("clear")
     else:  # for Windows
-        os.system('cls')
+        os.system("cls")
 
 
 def main():
