@@ -39,9 +39,9 @@ def intro_display():
     )
     print(
         FW
-        + "If the letter does exist and at the right place,it will turn in\n"
+        + "If the letter does exist and at the right place,it will turn in \n"
         + BG
-        + " GREEN"
+        + "GREEN"
         + Style.RESET_ALL
     )
     print(
