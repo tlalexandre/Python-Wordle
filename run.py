@@ -12,7 +12,7 @@ BY = Style.BRIGHT + Back.YELLOW + Fore.BLACK
 FW = Fore.WHITE
 BM = Style.BRIGHT + Back.MAGENTA + Fore.BLACK
 ENDC = Back.RESET
-FG = Fore.GREEN
+FG = Fore.LIGHTGREEN_EXGREEN
 
 
 def intro_display():
