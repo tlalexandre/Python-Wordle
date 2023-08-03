@@ -12,11 +12,23 @@ BY = Style.BRIGHT + Back.YELLOW + Fore.BLACK
 FW = Fore.WHITE
 BM = Style.BRIGHT + Back.MAGENTA + Fore.BLACK
 ENDC = Back.RESET
+FG = Fore.GREEN
 
 
 def intro_display():
-    print(FC + "Welcome to Python Wordle\n")
-    print(FC + "Press Enter to start")
+    print(FG + r"""
+ __      __                    __   ___              
+/\ \  __/\ \                  /\ \ /\_ \             
+\ \ \/\ \ \ \    ___    _ __  \_\ \\//\ \       __   
+ \ \ \ \ \ \ \  / __`\ /\`'__\/'_` \ \ \ \    /'__`\ 
+  \ \ \_/ \_\ \/\ \L\ \\ \ \//\ \L\ \ \_\ \_ /\  __/ 
+   \ `\___x___/\ \____/ \ \_\\ \___,_\/\____\\ \____\
+    '\/__//__/  \/___/   \/_/ \/__,_ /\/____/ \/____/
+                                                     
+                                                     
+
+""")
+
     print(
         FC
         + f"The rules are simple: Guess the Wordle in a minimum of tries.\n")
@@ -207,10 +219,11 @@ def main_game():
                     )
                     return
         print(Back.BLUE + f"Number of guesses: {guess}")
-        give_up = input("Do you want to give up? (y/n): ")
-        if give_up.lower() == "y":
-            print(f"The secret word was {secret}. Better luck next time!")
-            return
+        if guess > 5:
+            give_up = input("Do you want to give up? (y/n): ")
+            if give_up.lower() == "y":
+                print(f"The secret word was {secret}. Better luck next time!")
+                return
 
 
 def clear_terminal():
