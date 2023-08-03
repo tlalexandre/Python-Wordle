@@ -5,12 +5,12 @@ import requests
 
 init(autoreset=True)
 
-BG = Style.BRIGHT+Fore.WHITE + Back.GREEN
-BR = Style.BRIGHT+Back.RED + Fore.BLACK
+BG = Style.BRIGHT + Fore.WHITE + Back.GREEN
+BR = Style.BRIGHT + Back.RED + Fore.BLACK
 FC = Fore.CYAN
-BY = Style.BRIGHT+Back.YELLOW+Fore.BLACK
+BY = Style.BRIGHT + Back.YELLOW + Fore.BLACK
 FW = Fore.WHITE
-BM = Style.BRIGHT+Back.MAGENTA+Fore.BLACK
+BM = Style.BRIGHT + Back.MAGENTA + Fore.BLACK
 ENDC = Back.RESET
 
 
@@ -19,12 +19,14 @@ def intro_display():
     print(FC + "Press Enter to start")
     print(
         FC
-        + f"The rules are simple: Guess the Wordle in a minimum of tries.\n Try to input differents words to reveal the letters in the secret word.\n "
+        + f"The rules are simple: Guess the Wordle in a minimum of tries.\n")
+    print(
+        FC
+        + f"Try to input real words to find the letters in the secret word.\n"
     )
     print(
         FW
-        + "If the letter does exist in the word and in the correct spot,it will display in\n"
-
+        + "If the letter does exist and at the right place,it will turn in\n"
         + BG
         + " GREEN"
         + Style.RESET_ALL
@@ -50,13 +52,13 @@ def ask_word_length():
     while True:
         try:
             length = int(
-                input(FC+"Enter the desired word length(min:4 max:8): "))
+                input(FC + "Enter the desired word length(min:4 max:8): "))
             if length < 4 or length > 8:
-                print(BR+"Please enter a length between 4 and 8.")
+                print(BR + "Please enter a length between 4 and 8.")
             else:
                 return length
         except ValueError:
-            print(BR+"Invalid input. Please enter a valid number.")
+            print(BR + "Invalid input. Please enter a valid number.")
 
 
 def fetch_api_data(api_url):
@@ -93,7 +95,7 @@ def split_string(word):
 
 def check_length(user_letters, word_length):
     if len(user_letters) != word_length:
-        print(BR+f"You can only enter up to {word_length} letters.")
+        print(BR + f"You can only enter up to {word_length} letters.")
         return False
     return True
 
@@ -107,25 +109,19 @@ def check_real_word(user):
         if response.status_code == 200:
             data = response.json()
             if isinstance(data, list) and len(data) > 0:
-                print(BG+f"The word '{user}' exists in the dictionary.\n")
+                print(BG + f"The word '{user}' exists in the dictionary.\n")
                 return True
             else:
                 print(
-                    BR+f"The word '{user}' does not exist in the dictionary.")
+                    BR
+                    + f"The word '{user}' does not exist in the dictionary.")
                 return False
         else:
-            print(BR+f"The word '{user}' does not exist in the dictionary.")
+            print(BR + f"The word '{user}' does not exist in the dictionary.")
             return False
     except requests.exceptions.RequestException as e:
         print(f"Error occurred: {e}")
         return False
-
-
-def victory(guess, secret):
-    print(
-        BM +
-        f"Well Play ! You guessed in only {guess} times to find the word: {secret}"
-    )
 
 
 wrong_letters = set()
@@ -155,7 +151,8 @@ def compare_letters(user_letters, secret_letters, wrong_letters):
             misplaced_positions.append(i)
 
     for i, letter in enumerate(user_letters):
-        if letter not in secret_letters or user_counts[letter] > secret_counts[letter]:
+        if (letter not in secret_letters) or (user_counts[letter]
+                                              > secret_counts[letter]):
             wrong_positions.append(i)
             wrong_letters.add(letter)
 
@@ -179,13 +176,14 @@ def play_again():
     elif choice == "N":
         return False
     else:
-        print(BR+"Invalid choice. Please enter 'Y' or 'N'.")
+        print(BR + "Invalid choice. Please enter 'Y' or 'N'.")
 
 
 def main_game():
     intro_display()
     word_length = ask_word_length()
-    api_url = f"https://random-word-api.vercel.app/api?words=1&length={word_length}&type=uppercase"
+    api_url = (
+        f"https://random-word-api.vercel.app/api?words=1&length={word_length}&type=uppercase")
     secret = fetch_api_data(api_url)
     guess = 0
     while True:
@@ -203,7 +201,7 @@ def main_game():
                 if secret_letters == user_letters:
                     print(
                         BM
-                        + f"Well Play, you guessed the word {secret} in only {guess} times"
+                        + f"Well Play !Guesses: {guess}. Secret word: {secret}"
                     )
                     return
         print(Back.BLUE + f"Number of guesses: {guess}")
