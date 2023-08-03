@@ -5,10 +5,10 @@ import requests
 
 init(autoreset=True)
 
-BG = Style.BRIGHT + Fore.WHITE + Back.GREEN
+BG = Style.BRIGHT + Fore.WHITE + Back.LIGHTGREEN_EX
 BR = Style.BRIGHT + Back.RED + Fore.WHITE
 FC = Fore.LIGHTCYAN_EX
-BY = Style.BRIGHT + Back.YELLOW + Fore.WHITE
+BY = Style.BRIGHT + Back.LIGHTYELLOW_EX + Fore.WHITE
 FW = Fore.WHITE
 BM = Style.BRIGHT + Back.LIGHTMAGENTA_EX + Fore.WHITE
 ENDC = Back.RESET
