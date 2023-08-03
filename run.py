@@ -6,13 +6,14 @@ import requests
 init(autoreset=True)
 
 BG = Style.BRIGHT + Fore.WHITE + Back.GREEN
-BR = Style.BRIGHT + Back.RED + Fore.BLACK
-FC = Fore.CYAN
-BY = Style.BRIGHT + Back.YELLOW + Fore.BLACK
+BR = Style.BRIGHT + Back.RED + Fore.WHITE
+FC = Fore.LIGHTCYAN_EX
+BY = Style.BRIGHT + Back.YELLOW + Fore.WHITE
 FW = Fore.WHITE
-BM = Style.BRIGHT + Back.MAGENTA + Fore.BLACK
+BM = Style.BRIGHT + Back.LIGHTMAGENTA_EX + Fore.WHITE
 ENDC = Back.RESET
 FG = Fore.LIGHTGREEN_EXGREEN
+BB = Back.LIGHTBLUE_EX+Style.BRIGHT+Fore.WHITE
 
 
 def intro_display():
@@ -218,7 +219,7 @@ def main_game():
                         + f"Well Play !Guesses: {guess}. Secret word: {secret}"
                     )
                     return
-        print(Back.BLUE + f"Number of guesses: {guess}")
+        print(BB + f"Number of guesses: {guess}")
         if guess > 5:
             give_up = input("Do you want to give up? (y/n): ")
             if give_up.lower() == "y":
