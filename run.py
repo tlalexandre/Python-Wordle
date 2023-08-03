@@ -183,7 +183,9 @@ def main_game():
     intro_display()
     word_length = ask_word_length()
     api_url = (
-        f"https://random-word-api.vercel.app/api?words=1&length={word_length}&type=uppercase")
+        f"https://random-word-api.vercel.app/api?words=1"
+        f"&length={word_length}&type=uppercase"
+    )
     secret = fetch_api_data(api_url)
     guess = 0
     while True:
