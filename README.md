@@ -2,7 +2,7 @@
 
 A classic Wordle game written in Python and played on a terminal based window.
 
-![ScreenshotApp](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\ScreenshotApp.png)
+![ScreenshotApp](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Python-Wordle\imagesREADME\ScreenshotApp.png)
 
 - This simple game has standard rules for Wordle game, there is a secret word that needs to be guessed by inputting words of the same length. If the letters of the word exists in the secret word and are at the right place , they will be displayed with a green background. If they exist in the secret word but misplaced, they'll be displayed  with a yellow background. If they don't exist in the word, they'll be displayed with a red background. 
 
@@ -42,21 +42,30 @@ This site is designed with user experience in mind:
 
   - Then the user is asked to input his first try.
 
-     ![Introduction](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Introduction.png)
+     ![Introduction](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Python-Wordle\imagesREADME\Introduction.png)
 
-- Gameplay section![WordInputAndDesiredLength](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\WordInputAndDesiredLength.png)
+- Gameplay section
+
+  ![WordInputAndDesiredLength](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Python-Wordle\imagesREADME\WordInputAndDesiredLength.png)
 
   - This is the main section of the game . 
     A random word is selected from an API depending on the length that the users inputs. 
   - Then the user has to input his word. This word will be check through a dictionary API that will check if the user word does exists.
-  - If the word does exists, it will be analysed by the code and each of the letters of the user word will be compared to the secret word ones. Depending on if they match, are misplaced or are wrong , a feedback to the user will be done via differents colors . ![Guess](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Guess.png)
+  - If the word does exists, it will be analysed by the code and each of the letters of the user word will be compared to the secret word ones. Depending on if they match, are misplaced or are wrong , a feedback to the user will be done via differents colors .
+
+  ![Guess](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Python-Wordle\imagesREADME\Guess.png)
 
 - Give Up section
 
-  - After 5 tries, if the user wants to draw a new word or just get the answer, a Give up option is offered. The user has to answer by Yes or No. Only the answer Yes allows the user to get out of the game loop, any other answer will just keep the game running.![GiveUp](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\GiveUp.png)
+  - After 5 tries, if the user wants to draw a new word or just get the answer, a Give up option is offered. The user has to answer by Yes or No. Only the answer Yes allows the user to get out of the game loop, any other answer will just keep the game running.
+
+    ![GiveUp](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Python-Wordle\imagesREADME\GiveUp.png)
 
 - The Winning Condition
-  - Once the user guessed the secret word, it will be told in how much guesses he found the word and what was the secret word.![Win](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Win.png)
+  - Once the user guessed the secret word, it will be told in how much guesses he found the word and what was the secret word.
+  
+  ![Win](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Python-Wordle\imagesREADME\Win.png)
+  
 - The Replay Section
   - Once the user won, he's offered to replay the game , by inputting either Y or N , to allow him to replay a game of Wordle.
 
@@ -66,22 +75,26 @@ This site is designed with user experience in mind:
   - Using the validator from Code Institute, the code runs with no error. 
     The trailing space mentionned in the results are due to the ASCII Logo in the introduction of the game. 
 
-![Pep8Validator](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Pep8Validator.png)
+![Pep8Validator](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Python-Wordle\imagesREADME\Pep8Validator.png)
 
 - Error Handling
   - Through the code, I implemented several error handling cases . Here is a list of them:
   
-    - When the user has to input the length of the word he desires to play on, if the input is not a number, the following error message is displayed, and the user is asked to input again:![ErrorWordLength](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\ErrorWordLength.png)
+    - When the user has to input the length of the word he desires to play on, if the input is not a number, the following error message is displayed, and the user is asked to input again:
   
-    - When the user has to input a word, the word is compared to an API that's a dictionary, to make sure the word exist. If it doesn't, the user get the following message and is asked to input a new word:![ErrorWordDoesNotExist](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\ErrorWordDoesNotExist.png)
+    ![ErrorWordLength](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Python-Wordle\imagesREADME\ErrorWordLength.png)
+  
+    - When the user has to input a word, the word is compared to an API that's a dictionary, to make sure the word exist. If it doesn't, the user get the following message and is asked to input a new word:
+  
+    ![ErrorWordDoesNotExist](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Python-Wordle\imagesREADME\ErrorWordDoesNotExist.png)
   
     - When the user has to input a word, the program will check if the length of the user word matches the length picked at the start of the game to unsure that the comparison between the secret word and the user word is done properly. If the user word is too long, the program will return the following message:
-  
-      ![ErrorWordTooLong](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\ErrorWordTooLong.png)
-  
+    
+      ![ErrorWordTooLong](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Python-Wordle\imagesREADME\ErrorWordTooLong.png)
+    
     - When the user is asked if he wants to play a new game, he has to confirm by inputting either "Y" or "N".If anything else is input , the user gets the following message:
 
-![ErrorPlayAgain](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\ErrorPlayAgain.png)
+​						![ErrorPlayAgain](C:\Users\Tanguy\Desktop\CodeInstituteCourses\PP3\Python-Wordle\imagesREADME\ErrorPlayAgain.png)
 
 ### Bugs encountered
 
