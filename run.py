@@ -1,4 +1,4 @@
-from IPython.display import clear_output
+
 import os
 from colorama import Fore, Back, Style, init
 import requests
