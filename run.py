@@ -93,8 +93,12 @@ def fetch_api_data(api_url):
 
 
 def user_word():
-    user_input = input("Enter your word: ").upper()
-    return user_input
+    while True:
+        user_input = input("Enter your word: ").upper()
+        if user_input.isalpha():
+            return user_input
+        else:
+            print(BR+f"Please input alphabetical characters.")
 
 
 def split_string(word):
