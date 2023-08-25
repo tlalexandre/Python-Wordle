@@ -139,9 +139,6 @@ def check_real_word(user):
         return False
 
 
-wrong_letters = set()
-
-
 def compare_letters(user_letters, secret_letters, wrong_letters):
     secret_letters = list(secret_letters)
     user_letters = list(user_letters)
@@ -195,6 +192,7 @@ def play_again():
 
 
 def main_game():
+    wrong_letters = set()
     intro_display()
     word_length = ask_word_length()
     api_url = (
