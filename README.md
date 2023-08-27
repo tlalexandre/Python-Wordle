@@ -5,8 +5,9 @@ A classic Wordle game written in Python and played on a terminal based window.
 ![ScreenshotApp](https://github.com/tlalexandre/Python-Wordle/assets/120526785/7f1d7912-ebbb-4249-93c6-73ef4051694b)
 
 
-- This simple game has standard rules for Wordle game, there is a secret word that needs to be guessed by inputting words of the same length. If the letters of the word exists in the secret word and are at the right place , they will be displayed with a green background. If they exist in the secret word but misplaced, they'll be displayed  with a yellow background. If they don't exist in the word, they'll be displayed with a red background. 
-Link to the website: https://python-wordle-3bbb5fe346f5.herokuapp.com/
+- This simple game has standard rules for Wordle game, there is a secret word that needs to be guessed by inputting words of the same length. If the letters of the word exists in the secret word and are at the right place , they will be displayed with a green background. If they exist in the secret word but misplaced, they'll be displayed  with a yellow background. If they don't exist in the word, they'll be displayed with a red background.
+  
+- Link to the website: https://python-wordle-3bbb5fe346f5.herokuapp.com/
 1. User Experience
 2. Existing Features
    1. Introduction Section
